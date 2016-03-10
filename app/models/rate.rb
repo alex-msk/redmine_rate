@@ -12,6 +12,7 @@ class Rate < ActiveRecord::Base
   validates_presence_of :user_id
   validates_presence_of :date_in_effect
   validates_numericality_of :amount
+  validates_numericality_of :ext_amount
   
   before_save :unlocked?
   after_save :update_time_entry_cost_cache
@@ -70,6 +71,15 @@ class Rate < ActiveRecord::Base
     return nil if rate.nil?
     return rate.amount
   end
+  
+  # API to find the amount for a +user+ on a +project+ at a +date+
+  def self.ext_amount_for(user, project = nil, date = Date.today.to_s)
+    rate = self.for(user, project, date)
+
+    return nil if rate.nil?
+    return rate.ext_amount
+  end  
+  
 
   def self.update_all_time_entries_with_missing_cost(options={})
     with_common_lockfile(options[:force]) do

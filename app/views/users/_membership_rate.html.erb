@@ -17,7 +17,8 @@
         <%= submit_tag(l(:rate_label_set_rate), :class => "small") %>
         <% end %>
       <% else %>
-      <strong><%= link_to number_to_currency(rate.amount), { :action => 'edit', :id => user, :tab => 'rates'} %></strong>
+      <strong><%= link_to number_to_currency(rate.amount), { :action => 'edit', :id => user, :tab => 'rates'} %></strong> 
+      <strong><%= link_to number_to_currency(rate.ext_amount), { :action => 'edit', :id => user, :tab => 'rates'} %></strong>
       <% end %>
 
     </td>

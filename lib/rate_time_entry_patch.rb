@@ -41,19 +41,23 @@ module RateTimeEntryPatch
       unless read_attribute(:cost)
         if self.rate.nil?
           amount = Rate.amount_for(self.user, self.project, self.spent_on.to_s)
+          ext_amount = Rate.ext_amount_for(self.user, self.project, self.spent_on.to_s)
         else
           amount = rate.amount
+          ext_amount = rate.ext_amount
         end
-
+        
         if amount.nil?
           write_attribute(:cost, 0.0)
         else
           if store_to_db
             # Write the cost to the database for caching
             update_attribute(:cost, amount.to_f * hours.to_f)
+            update_attribute(:ext_cost, ext_amount.to_f * hours.to_f)
           else
             # Cache to object only
             write_attribute(:cost, amount.to_f * hours.to_f)
+            write_attribute(:ext_cost, ext_amount.to_f * hours.to_f)
           end
         end
       end
@@ -63,11 +67,13 @@ module RateTimeEntryPatch
 
     def clear_cost_cache
       write_attribute(:cost, nil)
+      write_attribute(:ext_cost, nil)
     end
     
     def save_cached_cost
       clear_cost_cache
       update_attribute(:cost, cost)
+      update_attribute(:ext_cost, cost)
     end
 
     def recalculate_cost

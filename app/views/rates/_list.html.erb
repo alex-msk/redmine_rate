@@ -14,6 +14,7 @@
                                :update => "rate_history",
                                :user_id => @user.id) %>
 	  <th style="width:15%"><%= l(:rate_label_rate) %></th>
+	  <th style="width:15%"><%= l(:rate_label_ext_rate) %></th>
 	  <th style="width:5%"></th>
 	</thead>
 	<tbody>
@@ -28,6 +29,7 @@
         <% end %>
       </td>
       <td align="right"><%= h rate.amount %></td>
+      <td align="right"><%= h rate.ext_amount %></td>
       <td align="center">
         <% if rate.unlocked? %>
         <%= link_to image_tag('edit.png'), edit_rate_path(rate, :back_url => @back_url) %>
