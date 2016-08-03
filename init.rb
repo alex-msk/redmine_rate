@@ -54,6 +54,15 @@ Redmine::Plugin.register :redmine_rate do
            })
 
   permission :view_rate, { }
+  
+  project_module :time_tracking do
+	  permission :view_own_timelog_cost, :time_logs => :index 
+	  permission :view_own_timelog_ext_cost, :time_logs => :index 
+	  permission :view_own_timelog_all_costs, :time_logs => :index 
+	  permission :view_own_timelog_all_ext_costs, :time_logs => :index 
+  end
+  
+
 
   menu :admin_menu, :rate_caches, { :controller => 'rate_caches', :action => 'index' },
        :caption => :text_rate_caches_panel
@@ -69,3 +78,4 @@ require 'redmine_rate/hooks/view_layouts_base_html_head_hook'
 require 'redmine_rate/hooks/plugin_timesheet_controller_report_action_before_send'
 require 'redmine_rate/hooks/plugin_timesheet_model_timesheet_time_entry_to_csv_hook'
 require 'redmine_rate/hooks/plugin_timesheet_model_timesheet_csv_header'
+require 'rate_timelog_hook'
